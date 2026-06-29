@@ -37,7 +37,7 @@ export default function Header() {
   const navLinkClass = `font-sans text-sm font-medium transition-colors focus:outline-none ${
     isScrolled
       ? 'text-ink-800 hover:text-terracotta-700'
-      : 'text-cream-50/95 hover:text-cream-50 drop-shadow-sm'
+      : 'text-cream-50 hover:text-terracotta-200 drop-shadow-md'
   }`;
 
   return (
@@ -45,7 +45,7 @@ export default function Header() {
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
           ? 'bg-cream-50/95 backdrop-blur-md border-b border-olive-100 shadow-sm py-3'
-          : 'bg-transparent py-5'
+          : 'bg-gradient-to-b from-ink-950/80 via-ink-950/40 to-transparent py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
