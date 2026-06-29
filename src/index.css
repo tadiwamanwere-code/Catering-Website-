@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --color-olive-50: #f5f6f3;
+  --color-olive-100: #e8ebdf;
+  --color-olive-200: #d1d8c2;
+  --color-olive-600: #4a5c4e;
+  --color-olive-700: #3c4c3f;
+  --color-olive-800: #2e3b31;
+  --color-olive-900: #202a22;
+
+  --color-terracotta-50: #faf4f1;
+  --color-terracotta-100: #f5e4db;
+  --color-terracotta-200: #ecc7b6;
+  --color-terracotta-600: #c5694d;
+  --color-terracotta-700: #ac583f;
+  --color-terracotta-800: #8c4532;
+  --color-terracotta-900: #6a3224;
+
+  --color-cream-50: #fdfcf7;
+  --color-cream-100: #faf6ec;
+  --color-cream-200: #f5ecd8;
+  --color-cream-300: #eddcc1;
+
+  --color-ink-800: #2d312e;
+  --color-ink-900: #1a1e1b;
+  --color-ink-950: #0f1210;
+}
+
+/* Custom scroll behavior and styling to align with warm editorial aesthetic */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-cream-50);
+  color: var(--color-ink-900);
+}
+
+::selection {
+  background-color: var(--color-terracotta-100);
+  color: var(--color-terracotta-900);
+}
+
+/* Elegant custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-olive-200);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-olive-600);
+}
+
