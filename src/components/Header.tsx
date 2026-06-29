@@ -32,6 +32,14 @@ export default function Header() {
     }
   };
 
+  // Over the dark hero (header transparent) the links need to be light so they
+  // pop; once the cream header bar appears on scroll they switch back to ink.
+  const navLinkClass = `font-sans text-sm font-medium transition-colors focus:outline-none ${
+    isScrolled
+      ? 'text-ink-800 hover:text-terracotta-700'
+      : 'text-cream-50/95 hover:text-cream-50 drop-shadow-sm'
+  }`;
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -51,10 +59,14 @@ export default function Header() {
               <Utensils className="w-5 h-5" />
             </div>
             <div>
-              <span className="block font-serif text-2xl font-bold tracking-tight text-ink-900 group-hover:text-terracotta-700 transition-colors leading-none">
+              <span className={`block font-serif text-2xl font-bold tracking-tight transition-colors leading-none ${
+                isScrolled ? 'text-ink-900 group-hover:text-terracotta-700' : 'text-cream-50 group-hover:text-cream-200 drop-shadow-sm'
+              }`}>
                 Moemas
               </span>
-              <span className="block font-sans text-[9px] tracking-[0.2em] uppercase font-semibold text-olive-600 mt-1">
+              <span className={`block font-sans text-[9px] tracking-[0.2em] uppercase font-semibold mt-1 ${
+                isScrolled ? 'text-olive-600' : 'text-cream-200/90'
+              }`}>
                 Catering · Cape Town
               </span>
             </div>
@@ -64,25 +76,25 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <button
               onClick={() => scrollToSection('about')}
-              className="font-sans text-sm font-medium text-ink-800 hover:text-terracotta-700 transition-colors focus:outline-none"
+              className={navLinkClass}
             >
               Danielle's Story
             </button>
             <button
               onClick={() => scrollToSection('menus')}
-              className="font-sans text-sm font-medium text-ink-800 hover:text-terracotta-700 transition-colors focus:outline-none"
+              className={navLinkClass}
             >
               Menus
             </button>
             <button
               onClick={() => scrollToSection('gallery')}
-              className="font-sans text-sm font-medium text-ink-800 hover:text-terracotta-700 transition-colors focus:outline-none"
+              className={navLinkClass}
             >
               Gallery
             </button>
             <button
               onClick={() => scrollToSection('new-venture')}
-              className="font-sans text-sm font-medium text-ink-800 hover:text-terracotta-700 transition-colors focus:outline-none"
+              className={navLinkClass}
             >
               New Launch
             </button>
@@ -102,7 +114,11 @@ export default function Header() {
           <div className="flex md:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-md text-ink-800 hover:text-terracotta-700 hover:bg-cream-100 transition-all focus:outline-none"
+              className={`p-2 rounded-md transition-all focus:outline-none ${
+                isScrolled
+                  ? 'text-ink-800 hover:text-terracotta-700 hover:bg-cream-100'
+                  : 'text-cream-50 hover:text-cream-200 hover:bg-cream-50/10'
+              }`}
               aria-label="Toggle Menu"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
