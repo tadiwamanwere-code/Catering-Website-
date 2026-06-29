@@ -3,9 +3,11 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
-import { Send, Calendar, Users, MapPin, Tag, MessageSquare, ShieldAlert, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Send, Calendar, Users, MapPin, Tag, MessageSquare, ShieldAlert, Sparkles, Mail, MessageCircle } from 'lucide-react';
 import { EnquiryFormState } from '../types';
+import { buildEnquiryMessage, buildMailtoUrl, buildWhatsappUrl } from '../lib/contact';
+import Reveal from './Reveal';
 
 interface EnquiryFormSectionProps {
   formState: EnquiryFormState;
@@ -18,9 +20,10 @@ export default function EnquiryFormSection({
   onFormStateChange,
   flashActive
 }: EnquiryFormSectionProps) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  // Cache the hand-off links built at submit time so the thank-you screen
+  // can offer them again if the visitor's email client didn't open.
+  const [handoff, setHandoff] = useState({ mailto: '', whatsapp: '' });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -32,37 +35,19 @@ export default function EnquiryFormSection({
     });
   };
 
-  const handleFormSubmit = async (e: React.FormEvent) => {
+  const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitError('');
 
-    try {
-      // Formspree submissions endpoint configuration.
-      // Submit to Formspree, which forwards to Danielle's real address (moemasfood@gmail.com)
-      const response = await fetch('https://formspree.io/f/moemas_catering_enquiry_pitch', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          ...formState,
-          _subject: `New Moemas Catering Enquiry: ${formState.occasion.toUpperCase()} - ${formState.name}`,
-          _replyto: formState.email,
-          to_email: 'moemasfood@gmail.com'
-        })
-      });
+    // Build a real, pre-filled email + WhatsApp message from the form.
+    const { subject, body } = buildEnquiryMessage(formState);
+    const mailto = buildMailtoUrl(subject, body);
+    const whatsapp = buildWhatsappUrl(body);
 
-      // Show beautiful success page.
-      // (Even if test submissions return a 404/Mock, we want a fully operational local thank-you screen for the pitch view!)
-      setIsSubmitted(true);
-    } catch (err) {
-      // Fallback to local success state for pitch integrity
-      setIsSubmitted(true);
-    } finally {
-      setIsSubmitting(false);
-    }
+    setHandoff({ mailto, whatsapp });
+    setIsSubmitted(true);
+
+    // Open the visitor's email client, pre-addressed to Danielle.
+    window.location.href = mailto;
   };
 
   return (
@@ -70,7 +55,7 @@ export default function EnquiryFormSection({
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Block */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <Reveal className="text-center max-w-2xl mx-auto mb-16">
           <span className="font-sans text-xs font-semibold uppercase tracking-widest text-terracotta-700">
             Secure Booking
           </span>
@@ -81,7 +66,7 @@ export default function EnquiryFormSection({
           <p className="font-sans text-sm text-ink-800/80">
             Tell us about your gathering, and Danielle will design a bespoke menu concept tailored to your table and budget.
           </p>
-        </div>
+        </Reveal>
 
         {/* Outer Form Frame with Flash Effect */}
         <div
@@ -287,28 +272,21 @@ export default function EnquiryFormSection({
                 />
               </div>
 
-              {submitError && (
-                <p className="font-sans text-xs text-terracotta-700 font-medium">
-                  {submitError}
-                </p>
-              )}
-
               {/* Action Submit */}
               <div className="pt-4">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-4 px-6 rounded-full bg-terracotta-700 hover:bg-terracotta-800 active:bg-terracotta-900 text-cream-50 font-sans text-sm uppercase tracking-widest font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer focus:outline-none disabled:opacity-50"
+                  className="w-full py-4 px-6 rounded-full bg-terracotta-700 hover:bg-terracotta-800 active:bg-terracotta-900 text-cream-50 font-sans text-sm uppercase tracking-widest font-bold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-terracotta-600"
                 >
                   <Send className="w-4 h-4" />
-                  <span>{isSubmitting ? 'Submitting Enquiry...' : 'Submit Quote Request'}</span>
+                  <span>Send Quote Request</span>
                 </button>
               </div>
 
               {/* Security Shield Sign-off */}
               <div className="flex items-center gap-2 justify-center text-ink-800/50 text-[11px] font-medium pt-2">
                 <ShieldAlert className="w-3.5 h-3.5 text-olive-600" />
-                <span>Form is secured. Your information goes directly to Danielle’s personal inbox.</span>
+                <span>Opens your email app with the details pre-filled, addressed straight to Danielle.</span>
               </div>
 
             </form>
@@ -325,22 +303,44 @@ export default function EnquiryFormSection({
               
               {/* Friendly thank-you state & timing note */}
               <p className="font-sans text-base text-ink-800/90 leading-relaxed mb-8">
-                Your catering enquiry has been delivered directly to Danielle. She reads every single one of these herself, and will build a custom blueprint based on your notes.
+                Your email app should have opened with your enquiry ready to send to Danielle. Just hit send and she'll build a custom blueprint based on your notes. Didn't open? Use one of the options below.
               </p>
+
+              {/* Working hand-off options */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8">
+                <a
+                  href={handoff.mailto}
+                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-terracotta-700 hover:bg-terracotta-800 text-cream-50 font-sans text-xs uppercase tracking-widest font-bold transition-colors shadow-sm flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-terracotta-600"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Open Email</span>
+                </a>
+                <a
+                  href={handoff.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-olive-600 hover:bg-olive-700 text-cream-50 font-sans text-xs uppercase tracking-widest font-bold transition-colors shadow-sm flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-olive-600"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  <span>Send on WhatsApp</span>
+                </a>
+              </div>
 
               <div className="py-4 px-6 bg-olive-50 border border-olive-200/50 rounded-xl inline-block text-left mb-6">
                 <span className="block font-sans text-[10px] tracking-wider uppercase font-bold text-olive-700 mb-1">
                   Reply Timing Notice
                 </span>
                 <span className="block font-serif text-sm italic text-ink-950 font-medium">
-                  "Danielle reads these herself, expect a reply within 24 hours on a working day."
+                  "Danielle reads these herself — expect a reply within 24 hours on a working day."
                 </span>
               </div>
 
               <div>
                 <button
+                  type="button"
                   onClick={() => {
                     setIsSubmitted(false);
+                    setHandoff({ mailto: '', whatsapp: '' });
                     onFormStateChange({
                       name: '',
                       email: '',

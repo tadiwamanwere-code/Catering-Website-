@@ -4,8 +4,8 @@
  */
 
 import { useState } from 'react';
-import { Camera, Eye } from 'lucide-react';
 import { GALLERY } from '../data';
+import Reveal from './Reveal';
 
 export default function GallerySection() {
   const [activeFilter, setActiveFilter] = useState<'All' | 'Plated' | 'Savory' | 'Sweet' | 'Corporate' | 'Celebration'>('All');
@@ -28,7 +28,7 @@ export default function GallerySection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <Reveal className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-xl">
             <span className="font-sans text-xs font-semibold uppercase tracking-widest text-terracotta-700">
               Visual Senses
@@ -57,7 +57,7 @@ export default function GallerySection() {
               </button>
             ))}
           </div>
-        </div>
+        </Reveal>
 
         {/* Tight, clean, balanced image grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -73,7 +73,7 @@ export default function GallerySection() {
                 <img
                   src={item.url}
                   alt={item.alt}
-                  className="w-full h-full object-cover group-hover:scale-104 transition-transform duration-700 filter brightness-95 group-hover:brightness-90"
+                  className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700 filter brightness-95 group-hover:brightness-90"
                   referrerPolicy="no-referrer"
                   loading="lazy"
                 />

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { ArrowRight, ChefHat, Sparkles } from 'lucide-react';
+import { ArrowRight, ChefHat } from 'lucide-react';
 import { HERO_IMAGE } from '../data';
 
 export default function Hero() {
@@ -27,7 +27,7 @@ export default function Hero() {
         <img
           src={HERO_IMAGE}
           alt="Moemas delicious catering plate slow cooked lamb"
-          className="w-full h-full object-cover object-center scale-102 filter brightness-[0.85] contrast-[1.05]"
+          className="w-full h-full object-cover object-center scale-[1.03] filter brightness-[0.85] contrast-[1.05]"
           referrerPolicy="no-referrer"
         />
         {/* Deep, rich, color-coordinated gradient overlay */}

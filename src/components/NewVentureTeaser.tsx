@@ -6,59 +6,52 @@
 import React, { useState } from 'react';
 import { Mail, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 import { NEW_VENTURE_IMAGE } from '../data';
+import { buildMailtoUrl } from '../lib/contact';
+import Reveal from './Reveal';
+
+// Validates an email well enough for a client-side form (anything more
+// strict than this rejects perfectly valid addresses).
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function NewVentureTeaser() {
   const [email, setEmail] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes('@')) {
+    if (!EMAIL_RE.test(email)) {
       setError('Please enter a valid email address.');
       return;
     }
 
     setError('');
-    setIsSubmitting(true);
 
-    try {
-      // Connect to Formspree using the Moemas email or standard submission structure.
-      // We will send a real fetch request to Formspree's endpoint.
-      // For general development or when no formspree ID is defined, we also handle success gracefully.
-      const response = await fetch('https://formspree.io/f/moemas_new_venture_waitlist', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          tag: 'newventure-waitlist',
-          source: 'Moemas Pitch Website Launch Teaser'
-        })
-      });
+    // Build a real waitlist email addressed straight to the business and open
+    // the visitor's email client. No backend or API keys required.
+    const subject = 'Moemas Pantry & Provisions — waitlist signup';
+    const body = [
+      'Hi Danielle,',
+      '',
+      'Please add me to the Moemas Pantry & Provisions launch waitlist.',
+      '',
+      `Email: ${email}`,
+      '',
+      'Sent from the Moemas Catering website.'
+    ].join('\n');
 
-      // Always treat it with premium customer respect and transition to Success.
-      // (Even if Formspree mock endpoint returns 404, we want a fully functioning local thank-you state for the pitch view!)
-      setIsSubmitted(true);
-    } catch (err) {
-      // Fallback to local success so Danielle is never presented with a broken page during her pitch view!
-      setIsSubmitted(true);
-    } finally {
-      setIsSubmitting(false);
-    }
+    setIsSubmitted(true);
+    window.location.href = buildMailtoUrl(subject, body);
   };
 
   return (
     <section className="py-20 bg-cream-50" id="new-venture">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="bg-olive-900 rounded-3xl overflow-hidden shadow-xl border border-olive-800 relative">
+
+        <Reveal className="bg-olive-900 rounded-3xl overflow-hidden shadow-xl border border-olive-800 relative">
           
           {/* Subtle warm texture or glow */}
-          <div className="absolute top-0 left-0 w-full h-full bg-radial-gradient from-terracotta-900/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(106,50,36,0.25),transparent_60%)] pointer-events-none" />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
             
@@ -97,7 +90,7 @@ export default function NewVentureTeaser() {
                   <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
                     <div className="relative flex-grow">
                       <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                        <Mail className="h-4.5 w-4.5 text-cream-200/50" />
+                        <Mail className="h-[18px] w-[18px] text-cream-200/50" />
                       </div>
                       <input
                         type="email"
@@ -105,23 +98,16 @@ export default function NewVentureTeaser() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email address"
+                        aria-label="Email address for the launch waitlist"
                         className="block w-full pl-10 pr-4 py-3.5 bg-olive-800/60 border border-olive-700/80 rounded-full text-cream-50 placeholder-cream-100/50 font-sans text-sm focus:outline-none focus:ring-2 focus:ring-terracotta-500 focus:border-transparent transition-all"
-                        disabled={isSubmitting}
                       />
                     </div>
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="px-6 py-3.5 bg-terracotta-600 text-cream-50 font-sans text-xs uppercase tracking-widest font-bold rounded-full hover:bg-terracotta-700 active:bg-terracotta-800 transition-all shrink-0 flex items-center justify-center gap-1.5 focus:outline-none disabled:opacity-50"
+                      className="px-6 py-3.5 bg-terracotta-600 text-cream-50 font-sans text-xs uppercase tracking-widest font-bold rounded-full hover:bg-terracotta-700 active:bg-terracotta-800 transition-all shrink-0 flex items-center justify-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-olive-900 focus:ring-terracotta-500"
                     >
-                      {isSubmitting ? (
-                        <span>Joining...</span>
-                      ) : (
-                        <>
-                          <span>Notify Me</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </>
-                      )}
+                      <span>Notify Me</span>
+                      <ArrowRight className="w-4 h-4" />
                     </button>
                   </form>
                 ) : (
@@ -149,7 +135,7 @@ export default function NewVentureTeaser() {
 
           </div>
 
-        </div>
+        </Reveal>
 
       </div>
     </section>

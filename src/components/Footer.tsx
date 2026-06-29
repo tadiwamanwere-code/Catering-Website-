@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Mail, Phone, MapPin, Instagram, Facebook, Utensils } from 'lucide-react';
+import { Mail, Phone, MapPin, MessageCircle, Utensils } from 'lucide-react';
+import { CONTACT } from '../data';
+import { buildWhatsappUrl } from '../lib/contact';
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -37,7 +39,7 @@ export default function Footer() {
               className="flex items-center gap-2 text-left group focus:outline-none"
             >
               <div className="w-9 h-9 rounded-full bg-terracotta-700 flex items-center justify-center text-cream-50 group-hover:bg-terracotta-600 transition-colors">
-                <Utensils className="w-4.5 h-4.5" />
+                <Utensils className="w-[18px] h-[18px]" />
               </div>
               <div>
                 <span className="block font-serif text-xl font-bold tracking-tight text-cream-50 group-hover:text-terracotta-200 transition-colors">
@@ -103,25 +105,25 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-terracotta-400 shrink-0" />
                 <a
-                  href="mailto:moemasfood@gmail.com"
+                  href={`mailto:${CONTACT.email}`}
                   className="font-sans text-xs text-cream-100/80 hover:text-terracotta-200 transition-colors underline decoration-olive-600 underline-offset-4"
                 >
-                  moemasfood@gmail.com
+                  {CONTACT.email}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-terracotta-400 shrink-0" />
                 <a
-                  href="tel:+27824559811"
+                  href={`tel:${CONTACT.phoneE164}`}
                   className="font-sans text-xs text-cream-100/80 hover:text-terracotta-200 transition-colors"
                 >
-                  +27 (0) 82 455 9811
+                  {CONTACT.phoneDisplay}
                 </a>
               </li>
               <li className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-terracotta-400 shrink-0 mt-0.5" />
                 <span className="font-sans text-xs text-cream-100/70 leading-relaxed">
-                  Constantia, CBD, Atlantic Seaboard, Stellenbosch, Franschhoek &amp; surrounding Cape regions.
+                  {CONTACT.serviceAreas}
                 </span>
               </li>
             </ul>
@@ -132,25 +134,30 @@ export default function Footer() {
         {/* Footer Base */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           
-          {/* Social Icons */}
+          {/* Direct contact channels */}
           <div className="flex items-center gap-4">
             <a
-              href="https://instagram.com"
+              href={buildWhatsappUrl('Hi Danielle, I have a catering enquiry.')}
               target="_blank"
               rel="noopener noreferrer"
               className="w-8 h-8 rounded-full bg-olive-800 hover:bg-terracotta-700 hover:text-cream-50 transition-colors flex items-center justify-center text-cream-200"
-              aria-label="Instagram Profile"
+              aria-label="Message Moemas Catering on WhatsApp"
             >
-              <Instagram className="w-4 h-4" />
+              <MessageCircle className="w-4 h-4" />
             </a>
             <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`mailto:${CONTACT.email}`}
               className="w-8 h-8 rounded-full bg-olive-800 hover:bg-terracotta-700 hover:text-cream-50 transition-colors flex items-center justify-center text-cream-200"
-              aria-label="Facebook Page"
+              aria-label="Email Moemas Catering"
             >
-              <Facebook className="w-4 h-4" />
+              <Mail className="w-4 h-4" />
+            </a>
+            <a
+              href={`tel:${CONTACT.phoneE164}`}
+              className="w-8 h-8 rounded-full bg-olive-800 hover:bg-terracotta-700 hover:text-cream-50 transition-colors flex items-center justify-center text-cream-200"
+              aria-label="Call Moemas Catering"
+            >
+              <Phone className="w-4 h-4" />
             </a>
           </div>
 

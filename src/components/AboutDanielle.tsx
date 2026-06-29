@@ -3,8 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { Quote, Sparkles, Award } from 'lucide-react';
+import { Quote, Award } from 'lucide-react';
 import { DANIELLE_IMAGE, DANIELLE_STORY } from '../data';
+import Reveal from './Reveal';
 
 export default function AboutDanielle() {
   return (
@@ -13,7 +14,7 @@ export default function AboutDanielle() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Chef Image Area */}
-          <div className="lg:col-span-5 relative">
+          <Reveal className="lg:col-span-5 relative">
             {/* Elegant framing shadows */}
             <div className="absolute -inset-2 bg-olive-100/40 rounded-2xl transform rotate-1 -z-10" />
             <div className="absolute -inset-4 bg-terracotta-100/30 rounded-2xl transform -rotate-1 -z-10" />
@@ -22,7 +23,7 @@ export default function AboutDanielle() {
               <img
                 src={DANIELLE_IMAGE}
                 alt="Danielle, chef and owner of Moemas Catering Cape Town"
-                className="w-full h-full object-cover filter brightness-98 hover:scale-101 transition-transform duration-500"
+                className="w-full h-full object-cover filter brightness-[0.98] hover:scale-[1.02] transition-transform duration-700"
                 referrerPolicy="no-referrer"
                 loading="lazy"
               />
@@ -33,10 +34,10 @@ export default function AboutDanielle() {
               <Award className="w-4 h-4 text-terracotta-200" />
               <span>Owner & Head Chef</span>
             </div>
-          </div>
+          </Reveal>
 
           {/* Chef Story Copy Area */}
-          <div className="lg:col-span-7">
+          <Reveal className="lg:col-span-7" delay={0.12}>
             <span className="font-sans text-xs font-semibold uppercase tracking-widest text-terracotta-700">
               Behind the Pass
             </span>
@@ -75,7 +76,7 @@ export default function AboutDanielle() {
               </div>
             </div>
 
-          </div>
+          </Reveal>
 
         </div>
       </div>

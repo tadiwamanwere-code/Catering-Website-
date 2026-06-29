@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import { TESTIMONIALS } from '../data';
+import Reveal from './Reveal';
 
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,7 +23,7 @@ export default function TestimonialsSection() {
     <section className="py-24 bg-cream-50 border-t border-olive-100/30" id="testimonials">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center mb-12">
+        <Reveal className="text-center mb-12">
           <span className="font-sans text-xs font-semibold uppercase tracking-widest text-terracotta-700">
             Kind Words
           </span>
@@ -30,7 +31,7 @@ export default function TestimonialsSection() {
             Shared Around the Table
           </h2>
           <div className="w-12 h-[1px] bg-olive-200 mx-auto mt-4" />
-        </div>
+        </Reveal>
 
         {/* Dynamic Testimonial Display */}
         <div className="relative bg-cream-100 rounded-2xl border border-olive-100/50 p-8 sm:p-12 md:p-16 shadow-xs overflow-hidden">

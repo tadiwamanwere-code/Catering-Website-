@@ -5,14 +5,30 @@
 
 import { MenuItem, Testimonial, GalleryItem } from './types';
 
-// Statically import images so Vite compiles, hashes, and includes them in the build
-import heroImg from './assets/images/moemas_hero_dish_1782726396701.jpg';
-import danielleImg from './assets/images/moemas_danielle_1782726412891.jpg';
-import newVentureImg from './assets/images/moemas_new_venture_1782726431822.jpg';
+// Import the generated assets so Vite fingerprints, optimizes and bundles them.
+// (String paths like "/src/assets/..." only resolve in dev and 404 in a production build.)
+import heroImage from './assets/images/moemas_hero_dish_1782726396701.jpg';
+import danielleImage from './assets/images/moemas_danielle_1782726412891.jpg';
+import newVentureImage from './assets/images/moemas_new_venture_1782726431822.jpg';
 
-export const HERO_IMAGE = heroImg;
-export const DANIELLE_IMAGE = danielleImg;
-export const NEW_VENTURE_IMAGE = newVentureImg;
+export const HERO_IMAGE = heroImage;
+export const DANIELLE_IMAGE = danielleImage;
+export const NEW_VENTURE_IMAGE = newVentureImage;
+
+/**
+ * Single source of truth for the business's real contact channels.
+ * Used by the enquiry + waitlist forms (mailto / WhatsApp) and the footer.
+ */
+export const CONTACT = {
+  email: 'moemasfood@gmail.com',
+  // Display format for humans:
+  phoneDisplay: '+27 (0) 82 455 9811',
+  // E.164 (no spaces / symbols) for tel: and wa.me links:
+  phoneE164: '+27824559811',
+  whatsapp: '27824559811',
+  serviceAreas:
+    'Constantia, CBD, Atlantic Seaboard, Stellenbosch, Franschhoek & surrounding Cape regions.'
+} as const;
 
 export const MENUS: MenuItem[] = [
   {

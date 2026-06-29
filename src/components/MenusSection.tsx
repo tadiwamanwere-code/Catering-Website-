@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { BookOpen, Check, HelpCircle } from 'lucide-react';
-import { MenuItem } from '../types';
+import { BookOpen, HelpCircle } from 'lucide-react';
 import { MENUS } from '../data';
+import Reveal from './Reveal';
 
 interface MenusSectionProps {
   selectedCategory: 'corporate' | 'private' | 'wedding' | 'seasonal';
@@ -52,7 +52,7 @@ export default function MenusSection({
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <Reveal className="text-center max-w-2xl mx-auto mb-16">
           <span className="font-sans text-xs font-semibold uppercase tracking-widest text-terracotta-700">
             Danielle's Kitchen
           </span>
@@ -63,7 +63,7 @@ export default function MenusSection({
           <p className="font-sans text-sm text-ink-800/80">
             These are sample culinary blueprints. Every menu we serve is customized to your tastes, headcount, and budget.
           </p>
-        </div>
+        </Reveal>
 
         {/* Tab Selectors */}
         <div className="flex flex-wrap items-center justify-center gap-2 mb-12 border-b border-olive-200/45 pb-4">

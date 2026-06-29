@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { ArrowRight, Briefcase, Sparkles, Heart } from 'lucide-react';
+import Reveal from './Reveal';
 
 interface BeliefCard {
   id: string;
@@ -65,7 +66,7 @@ export default function QuickBelief({ onCategorySelect }: QuickBeliefProps) {
     <section className="py-20 bg-cream-50" id="services">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Intro Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <Reveal className="text-center max-w-3xl mx-auto mb-16">
           <span className="font-sans text-xs font-semibold uppercase tracking-widest text-terracotta-700">
             Crafted for Cape Town
           </span>
@@ -76,13 +77,14 @@ export default function QuickBelief({ onCategorySelect }: QuickBeliefProps) {
           <p className="font-sans text-base text-ink-800/80 leading-relaxed">
             We focus on owner-led, premium culinary execution. We cook in small-batches, plate with precision, and tailor every detail to Danielle’s uncompromising personal standards.
           </p>
-        </div>
+        </Reveal>
 
         {/* Three Grid Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {CARDS.map((card) => (
-            <div
+          {CARDS.map((card, idx) => (
+            <Reveal
               key={card.id}
+              delay={idx * 0.1}
               className="bg-cream-100 rounded-2xl overflow-hidden border border-olive-100/60 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group"
             >
               {/* Photo Area */}
@@ -116,7 +118,7 @@ export default function QuickBelief({ onCategorySelect }: QuickBeliefProps) {
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </button>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

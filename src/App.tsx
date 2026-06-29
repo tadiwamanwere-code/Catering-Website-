@@ -4,6 +4,7 @@
  */
 
 import { useState } from 'react';
+import { MotionConfig } from 'motion/react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import QuickBelief from './components/QuickBelief';
@@ -58,8 +59,9 @@ export default function App() {
   };
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="min-h-screen flex flex-col font-sans bg-cream-50 text-ink-900 overflow-x-hidden selection:bg-terracotta-100 selection:text-terracotta-900">
-      
+
       {/* Header */}
       <Header />
 
@@ -111,5 +113,6 @@ export default function App() {
       <Footer />
 
     </div>
+    </MotionConfig>
   );
 }
