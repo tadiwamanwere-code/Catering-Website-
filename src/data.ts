@@ -5,10 +5,14 @@
 
 import { MenuItem, Testimonial, GalleryItem } from './types';
 
-// Let's reference the exact generated assets
-export const HERO_IMAGE = '/src/assets/images/moemas_hero_dish_1782726396701.jpg';
-export const DANIELLE_IMAGE = '/src/assets/images/moemas_danielle_1782726412891.jpg';
-export const NEW_VENTURE_IMAGE = '/src/assets/images/moemas_new_venture_1782726431822.jpg';
+// Statically import images so Vite compiles, hashes, and includes them in the build
+import heroImg from './assets/images/moemas_hero_dish_1782726396701.jpg';
+import danielleImg from './assets/images/moemas_danielle_1782726412891.jpg';
+import newVentureImg from './assets/images/moemas_new_venture_1782726431822.jpg';
+
+export const HERO_IMAGE = heroImg;
+export const DANIELLE_IMAGE = danielleImg;
+export const NEW_VENTURE_IMAGE = newVentureImg;
 
 export const MENUS: MenuItem[] = [
   {
